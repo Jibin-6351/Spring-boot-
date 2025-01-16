@@ -6,6 +6,7 @@ import com.example.demo.service.TestService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -32,7 +33,9 @@ public class TestServiceImpl implements TestService {
 
     @Override
     public void deleteMovie(Long id) {
+
         movieRepository.deleteById(id);
+
     }
 
     @Override
@@ -44,6 +47,7 @@ public class TestServiceImpl implements TestService {
 
         existingMovie.setDirector(movie.getDirector());
         existingMovie.setTitle(movie.getTitle());
+        existingMovie.setReleaseDate(movie.getReleaseDate());
         return movieRepository.save(existingMovie);
 
     }
@@ -51,6 +55,20 @@ public class TestServiceImpl implements TestService {
     @Override
     public List<Movies> getAllMovies() {
         return movieRepository.findAll();
+    }
+
+    @Override
+    public List<Movies> getMovieByReleaseDate(LocalDate releaseDate) {
+        List<Movies> moviesList = movieRepository.findTitleByReleaseDate(releaseDate);
+        if (moviesList == null) {
+            throw new RuntimeException("No movies found");
+        }
+        return moviesList;
+    }
+
+    @Override
+    public List<Movies> getMovieByPeriod(LocalDate date1, LocalDate date2) {
+        return movieRepository.findAllTitleByReleaseDateBetween(date1, date2);
     }
 
 

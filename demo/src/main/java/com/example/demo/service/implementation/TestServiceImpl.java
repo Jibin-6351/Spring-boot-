@@ -1,23 +1,25 @@
 package com.example.demo.service.implementation;
 
+import com.example.demo.domain.Cast;
 import com.example.demo.domain.Movies;
+import com.example.demo.dto.MovieSummaryDTO;
+import com.example.demo.repository.CastRepository;
 import com.example.demo.repository.MovieRepository;
 import com.example.demo.service.TestService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
 
-// ADDING LOGIC
-
-
 @Service
 @AllArgsConstructor
 public class TestServiceImpl implements TestService {
 
+    private final CastRepository castRepository;
     private MovieRepository movieRepository;
 
     @Override
@@ -26,9 +28,13 @@ public class TestServiceImpl implements TestService {
     }
 
     @Override
-
     public Movies addMovie(Movies movie) {
-        return movieRepository.save(movie);
+
+        if (movie.getGenre() == null) {
+            throw new IllegalArgumentException("Genre should not be null");
+        } else {
+            return movieRepository.save(movie);
+        }
     }
 
     @Override
@@ -71,5 +77,26 @@ public class TestServiceImpl implements TestService {
         return movieRepository.findAllTitleByReleaseDateBetween(date1, date2);
     }
 
+    @Override
+    public MovieSummaryDTO getMovieDTO(Long id) {
+        Optional<Movies> movie = movieRepository.findById(id);
+
+        if (movie.isEmpty()) {
+            throw new RuntimeException("Movie not found with id " + id);
+        }
+
+        List<Cast> castList = castRepository.findByMovieId(movie.get().getId());
+        MovieSummaryDTO summary = new MovieSummaryDTO();
+        summary.setTitle(movie.get().getTitle());
+        summary.setDirector(movie.get().getDirector());
+        summary.setDate(movie.get().getReleaseDate());
+        summary.setCastList(castList);
+
+        return summary;
+    }
+
+
 
 }
+
+

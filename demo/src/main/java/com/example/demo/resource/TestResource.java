@@ -1,6 +1,8 @@
 package com.example.demo.resource;
 
+import com.example.demo.Exception.ErrorObj;
 import com.example.demo.domain.Movies;
+import com.example.demo.dto.MovieSummaryDTO;
 import com.example.demo.repository.MovieRepository;
 import com.example.demo.service.TestService;
 import lombok.AllArgsConstructor;
@@ -9,8 +11,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
-import java.time.Month;
-import java.time.Year;
 import java.util.List;
 import java.util.Optional;
 
@@ -41,8 +41,6 @@ public class TestResource {
 
     @PostMapping("movie")
     public ResponseEntity<Movies> run(@RequestBody Movies movies) {
-
-
         return ResponseEntity.ok(testService.addMovie(movies));
     }
 
@@ -78,6 +76,22 @@ public class TestResource {
         List<Movies> movies = testService.getMovieByPeriod(date1, date2);
 
         return ResponseEntity.ok(movies);
+    }
+
+    @GetMapping("movie/moviedto/{id}")
+
+    public ResponseEntity<MovieSummaryDTO> getMovieDto(@PathVariable Long id) {
+        return ResponseEntity.ok(testService.getMovieDTO(id));
+    }
+
+    @ExceptionHandler
+    public ResponseEntity<ErrorObj> runTimeException(Exception e) {
+
+        ErrorObj errorObj = new ErrorObj();
+        errorObj.setError(e.getMessage());
+        errorObj.setStatusCode(HttpStatus.NOT_FOUND.value());
+
+        return new ResponseEntity<ErrorObj>(errorObj, HttpStatus.NOT_FOUND);
     }
 
 

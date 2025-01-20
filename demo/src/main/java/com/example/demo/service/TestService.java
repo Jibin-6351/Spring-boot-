@@ -1,6 +1,6 @@
 package com.example.demo.service;
-
 import com.example.demo.domain.Movies;
+import com.example.demo.dto.MovieSummaryDTO;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -21,6 +21,8 @@ public interface TestService {
     List<Movies> getMovieByReleaseDate(LocalDate releaseDate);
 
     List<Movies> getMovieByPeriod(LocalDate date1, LocalDate date2);
+
+    MovieSummaryDTO getMovieDTO(Long id);
 
 
 }

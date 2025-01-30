@@ -24,5 +24,7 @@ public interface TestService {
 
     MovieSummaryDTO getMovieDTO(Long id);
 
+    List<MovieSummaryDTO> getAlldataPath();
+
 
 }

@@ -8,7 +8,6 @@ import com.example.demo.repository.MovieRepository;
 import com.example.demo.service.TestService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -19,7 +18,7 @@ import java.util.Optional;
 @AllArgsConstructor
 public class TestServiceImpl implements TestService {
 
-    private final CastRepository castRepository;
+    private CastRepository castRepository;
     private MovieRepository movieRepository;
 
     @Override
@@ -49,8 +48,6 @@ public class TestServiceImpl implements TestService {
 
         Movies existingMovie = movieRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Movie not found with id " + id));
-
-
         existingMovie.setDirector(movie.getDirector());
         existingMovie.setTitle(movie.getTitle());
         existingMovie.setReleaseDate(movie.getReleaseDate());
@@ -67,7 +64,7 @@ public class TestServiceImpl implements TestService {
     public List<Movies> getMovieByReleaseDate(LocalDate releaseDate) {
         List<Movies> moviesList = movieRepository.findTitleByReleaseDate(releaseDate);
         if (moviesList == null) {
-            throw new RuntimeException("No movies found");
+            throw new RuntimeException("No Movies found by release date " + releaseDate);
         }
         return moviesList;
     }
@@ -89,14 +86,16 @@ public class TestServiceImpl implements TestService {
         MovieSummaryDTO summary = new MovieSummaryDTO();
         summary.setTitle(movie.get().getTitle());
         summary.setDirector(movie.get().getDirector());
-        summary.setDate(movie.get().getReleaseDate());
+        summary.setReleaseDate(movie.get().getReleaseDate());
         summary.setCastList(castList);
 
         return summary;
     }
 
-
-
+    @Override
+    public List<MovieSummaryDTO> getAlldataPath() {
+        return movieRepository.findAllMoviesWithFileInfo();
+    }
 }
 
 

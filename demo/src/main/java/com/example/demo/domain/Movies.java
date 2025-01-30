@@ -5,8 +5,8 @@ import jakarta.persistence.*;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
+
 import java.time.LocalDate;
-import java.util.List;
 
 @Entity
 @Table(name = "movies")
@@ -25,9 +25,18 @@ public class Movies {
 
     private LocalDate releaseDate;
 
+    private String rating;
+
+    private String description;
+
     @Enumerated(EnumType.STRING)
 
     private Genre genre;
+
+
+    @ManyToOne
+    @JoinColumn(name = "file_id")
+    private File file;
 
 
 

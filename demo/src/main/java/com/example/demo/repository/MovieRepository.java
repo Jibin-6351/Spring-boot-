@@ -1,13 +1,22 @@
 package com.example.demo.repository;
 
 import com.example.demo.domain.Movies;
+import com.example.demo.dto.MovieSummaryDTO;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 
 import java.time.LocalDate;
 import java.util.List;
 
 
 public interface MovieRepository extends JpaRepository<Movies, Long> {
+
+
+    @Query("SELECT new com.example.demo.dto.MovieSummaryDTO(m.id, m.title, m.director, m.releaseDate, m.description, m.rating, f.path,m.genre) " +
+            "FROM Movies m " +
+            "INNER JOIN File f ON f.id = m.file.id")
+    List<MovieSummaryDTO> findAllMoviesWithFileInfo();
+
 
     boolean existsById(Long id);
 

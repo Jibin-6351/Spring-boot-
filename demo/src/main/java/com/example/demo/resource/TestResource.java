@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
@@ -38,7 +39,6 @@ public class TestResource {
 
     }
 
-
     @PostMapping("movie")
     public ResponseEntity<Movies> run(@RequestBody Movies movies) {
         return ResponseEntity.ok(testService.addMovie(movies));
@@ -62,7 +62,6 @@ public class TestResource {
 
         return ResponseEntity.ok(testService.updateMovie(movie, movie.getId()));
 
-
     }
 
     @GetMapping("/movies/{releaseDate}")
@@ -84,14 +83,28 @@ public class TestResource {
         return ResponseEntity.ok(testService.getMovieDTO(id));
     }
 
-    @ExceptionHandler
+
+    @GetMapping("/path")
+    public ResponseEntity<List<MovieSummaryDTO>> getPath() {
+        return ResponseEntity.ok(testService.getAlldataPath());
+    }
+
+
+    @ExceptionHandler(RuntimeException.class)
     public ResponseEntity<ErrorObj> runTimeException(Exception e) {
 
         ErrorObj errorObj = new ErrorObj();
         errorObj.setError(e.getMessage());
         errorObj.setStatusCode(HttpStatus.NOT_FOUND.value());
+        return new ResponseEntity<>(errorObj, HttpStatus.NOT_FOUND);
+    }
 
-        return new ResponseEntity<ErrorObj>(errorObj, HttpStatus.NOT_FOUND);
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<ErrorObj> illegalArgumentException(IllegalArgumentException e) {
+        ErrorObj errorObj = new ErrorObj();
+        errorObj.setError(e.getMessage());
+        errorObj.setStatusCode(HttpStatus.BAD_REQUEST.value());
+        return new ResponseEntity<>(errorObj, HttpStatus.BAD_REQUEST);
     }
 
 

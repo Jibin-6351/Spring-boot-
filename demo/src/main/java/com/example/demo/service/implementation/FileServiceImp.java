@@ -43,8 +43,9 @@ public class FileServiceImp implements FileService {
         try {
 
             String name = file.getOriginalFilename();
-            Path path = Paths.get("C:\\Users\\Intern\\Downloads\\demo\\demo\\src\\main\\resources\\static\\images", name);
+            Path path = Paths.get("C:\\Users\\Intern\\IdeaProjects\\Spring-boot-\\demo\\src\\main\\resources\\static\\images", name);
             file.transferTo(path);
+
             File fileEntity = new File();
             fileEntity.setName(name);
             fileEntity.setPath("http://localhost:8080/images/" + name);

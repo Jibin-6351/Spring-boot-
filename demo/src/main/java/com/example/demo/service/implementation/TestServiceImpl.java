@@ -84,6 +84,10 @@ public class TestServiceImpl implements TestService {
 
         List<Cast> castList = castRepository.findByMovieId(movie.get().getId());
         MovieSummaryDTO summary = new MovieSummaryDTO();
+        summary.setId(movie.get().getId());
+        summary.setDescription(movie.get().getDescription());
+        summary.setGenre(movie.get().getGenre());
+        summary.setRating(movie.get().getRating());
         summary.setTitle(movie.get().getTitle());
         summary.setDirector(movie.get().getDirector());
         summary.setReleaseDate(movie.get().getReleaseDate());
@@ -92,10 +96,35 @@ public class TestServiceImpl implements TestService {
         return summary;
     }
 
+
     @Override
     public List<MovieSummaryDTO> getAlldataPath() {
         return movieRepository.findAllMoviesWithFileInfo();
     }
+
+    @Override
+    public void updateView( Long id) {
+        Movies existingMovie = movieRepository.findById(id).orElseThrow(() -> new RuntimeException("Movie Not found" + id));
+        existingMovie.setViews(existingMovie.getViews() + 1);
+        movieRepository.save(existingMovie);
+    }
+
+    @Override
+        public void likeMovie(Long id) {
+            Movies existingMovie = movieRepository.findById(id).orElseThrow(() -> new RuntimeException("Movie Not found" + id));
+            existingMovie.setLikemovie(existingMovie.getLikemovie()+1);
+            movieRepository.save(existingMovie);
+        }
+
+    @Override
+    public void dislikeMovie(Long id) {
+
+        Movies existingMovie = movieRepository.findById(id).orElseThrow(() -> new RuntimeException("Movie Not found" + id));
+        existingMovie.setDislikemovie(existingMovie.getDislikemovie()+1);
+        movieRepository.save(existingMovie);
+    }
+
+
 }
 
 

@@ -26,5 +26,13 @@ public interface TestService {
 
     List<MovieSummaryDTO> getAlldataPath();
 
+    void updateView(Long id);
+
+    void likeMovie(Long id);
+
+    void dislikeMovie(Long id);
+
+
+
 
 }

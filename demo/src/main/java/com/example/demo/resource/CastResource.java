@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RestController;
 @AllArgsConstructor
 public class CastResource {
 
-    private final CastRepository castRepository;
     private CastService castService;
 
 

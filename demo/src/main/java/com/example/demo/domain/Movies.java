@@ -29,6 +29,12 @@ public class Movies {
 
     private String description;
 
+    private Long views;
+
+    private Long likemovie;
+
+    private Long dislikemovie;
+
     @Enumerated(EnumType.STRING)
 
     private Genre genre;

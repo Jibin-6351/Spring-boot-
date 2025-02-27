@@ -23,7 +23,7 @@ public interface MovieRepository extends JpaRepository<Movies, Long> {
 
     List<Movies> findTitleByReleaseDate(LocalDate releaseDate);
 
-    List<Movies> findAllTitleByReleaseDateBetween(LocalDate Date1, LocalDate Date2);
+    List<Movies> findAllTitleByReleaseDateBetween(LocalDate date1, LocalDate date2);
 
 
 }

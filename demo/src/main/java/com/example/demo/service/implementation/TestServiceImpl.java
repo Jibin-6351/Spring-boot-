@@ -110,18 +110,21 @@ public class TestServiceImpl implements TestService {
     }
 
     @Override
-        public void likeMovie(Long id) {
+        public Number likeMovie(Long id) {
             Movies existingMovie = movieRepository.findById(id).orElseThrow(() -> new RuntimeException("Movie Not found" + id));
             existingMovie.setLikemovie(existingMovie.getLikemovie()+1);
-            movieRepository.save(existingMovie);
+             movieRepository.save(existingMovie);
+             return existingMovie.getLikemovie();
+
         }
 
     @Override
-    public void dislikeMovie(Long id) {
+    public Number dislikeMovie(Long id) {
 
         Movies existingMovie = movieRepository.findById(id).orElseThrow(() -> new RuntimeException("Movie Not found" + id));
         existingMovie.setDislikemovie(existingMovie.getDislikemovie()+1);
         movieRepository.save(existingMovie);
+        return existingMovie.getDislikemovie();
     }
 
 

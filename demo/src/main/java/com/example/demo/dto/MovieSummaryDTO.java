@@ -31,6 +31,8 @@ public class MovieSummaryDTO {
 
 
 
+
+
     private List<Cast> castList;
 
     public MovieSummaryDTO(Long id,String title,String director,LocalDate releaseDate,String description,String rating, Long views, Long dislikemovie,Long likemovies,  String path,Genre genre) {

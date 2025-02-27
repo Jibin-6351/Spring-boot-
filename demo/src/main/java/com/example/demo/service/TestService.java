@@ -28,9 +28,9 @@ public interface TestService {
 
     void updateView(Long id);
 
-    void likeMovie(Long id);
+     Number likeMovie(Long id);
 
-    void dislikeMovie(Long id);
+    Number dislikeMovie(Long id);
 
 
 

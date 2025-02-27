@@ -35,6 +35,8 @@ public class Movies {
 
     private Long dislikemovie;
 
+    private String movie_trailer;
+
     @Enumerated(EnumType.STRING)
 
     private Genre genre;

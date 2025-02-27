@@ -1,7 +1,6 @@
 package com.example.demo.resource;
 
 import com.example.demo.Exception.ErrorObj;
-import com.example.demo.Jsonconvert;
 import com.example.demo.domain.Movies;
 import com.example.demo.dto.MovieSummaryDTO;
 import com.example.demo.repository.MovieRepository;
@@ -72,7 +71,7 @@ public class TestResource {
         return ResponseEntity.ok(movies);
     }
 
-    @GetMapping("movie/release")
+    @GetMapping("/release")
     public ResponseEntity<List<Movies>> getMovieByTimePeriod(@RequestParam LocalDate date1, @RequestParam LocalDate date2) {
         List<Movies> movies = testService.getMovieByPeriod(date1, date2);
 
@@ -100,18 +99,16 @@ public class TestResource {
 
 
     @PutMapping("like/{id}")
-    public ResponseEntity<Jsonconvert> like(@PathVariable Long id) {
-        testService.likeMovie(id);
-        Jsonconvert jsonconvert = new Jsonconvert("Like Added");
-        return new ResponseEntity<>(jsonconvert, HttpStatus.OK);
+    public ResponseEntity<Number> like(@PathVariable Long id) {
+       return ResponseEntity.ok( testService.likeMovie(id));
+
     }
 
 
     @PutMapping("dislike/{id}")
-    public ResponseEntity<Jsonconvert> dislike(@PathVariable Long id) {
-        testService.dislikeMovie(id);
-        Jsonconvert jsonconvert = new Jsonconvert("Dislike Added");
-        return new ResponseEntity<>(jsonconvert, HttpStatus.OK);
+    public ResponseEntity<Number> dislike(@PathVariable Long id) {
+        return ResponseEntity.ok(testService.dislikeMovie(id));
+
     }
 
 

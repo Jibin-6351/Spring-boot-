@@ -13,5 +13,4 @@ import lombok.Setter;
 public class FileDTO {
     private long id;
     private String path;
-    private String name;
 }

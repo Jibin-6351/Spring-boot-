@@ -1,6 +1,9 @@
 package com.example.demo.service;
+
 import com.example.demo.domain.Movies;
+import com.example.demo.dto.MovieDTO;
 import com.example.demo.dto.MovieSummaryDTO;
+import org.springframework.data.domain.Page;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -28,11 +31,11 @@ public interface TestService {
 
     void updateView(Long id);
 
-     Number likeMovie(Long id);
+    Number likeMovie(Long id);
 
     Number dislikeMovie(Long id);
 
-
+    Page<Movies> getMovieByPage(int size);
 
 
 }

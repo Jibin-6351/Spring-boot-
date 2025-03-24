@@ -16,11 +16,11 @@ public class File {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String name;
     private String path;
     public File(long id) {
         this.id = id;
     }
+
 
 
 }

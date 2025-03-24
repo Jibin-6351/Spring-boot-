@@ -2,11 +2,15 @@ package com.example.demo.service.implementation;
 
 import com.example.demo.domain.Cast;
 import com.example.demo.domain.Movies;
+import com.example.demo.dto.MovieDTO;
 import com.example.demo.dto.MovieSummaryDTO;
 import com.example.demo.repository.CastRepository;
 import com.example.demo.repository.MovieRepository;
 import com.example.demo.service.TestService;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -23,7 +27,11 @@ public class TestServiceImpl implements TestService {
 
     @Override
     public Optional<Movies> testMethod(Long id) {
-        return movieRepository.findById(id);
+
+        Optional<Movies> movies = movieRepository.findById(id);
+
+        return movies;
+
     }
 
     @Override
@@ -86,7 +94,7 @@ public class TestServiceImpl implements TestService {
         MovieSummaryDTO summary = new MovieSummaryDTO();
         summary.setId(movie.get().getId());
         summary.setDescription(movie.get().getDescription());
-        summary.setGenre(movie.get().getGenre());
+//        summary.setGenre(movie.get().getGenre());
         summary.setRating(movie.get().getRating());
         summary.setTitle(movie.get().getTitle());
         summary.setDirector(movie.get().getDirector());
@@ -103,31 +111,35 @@ public class TestServiceImpl implements TestService {
     }
 
     @Override
-    public void updateView( Long id) {
+    public void updateView(Long id) {
         Movies existingMovie = movieRepository.findById(id).orElseThrow(() -> new RuntimeException("Movie Not found" + id));
         existingMovie.setViews(existingMovie.getViews() + 1);
         movieRepository.save(existingMovie);
     }
 
     @Override
-        public Number likeMovie(Long id) {
-            Movies existingMovie = movieRepository.findById(id).orElseThrow(() -> new RuntimeException("Movie Not found" + id));
-            existingMovie.setLikemovie(existingMovie.getLikemovie()+1);
-             movieRepository.save(existingMovie);
-             return existingMovie.getLikemovie();
+    public Number likeMovie(Long id) {
+        Movies existingMovie = movieRepository.findById(id).orElseThrow(() -> new RuntimeException("Movie Not found" + id));
+        existingMovie.setLikemovie(existingMovie.getLikemovie() + 1);
+        movieRepository.save(existingMovie);
+        return existingMovie.getLikemovie();
 
-        }
+    }
 
     @Override
     public Number dislikeMovie(Long id) {
 
         Movies existingMovie = movieRepository.findById(id).orElseThrow(() -> new RuntimeException("Movie Not found" + id));
-        existingMovie.setDislikemovie(existingMovie.getDislikemovie()+1);
+        existingMovie.setDislikemovie(existingMovie.getDislikemovie() + 1);
         movieRepository.save(existingMovie);
         return existingMovie.getDislikemovie();
     }
 
-
+    @Override
+    public Page<Movies> getMovieByPage(int size) {
+        Pageable pageable = PageRequest.of(size, 9);
+        return movieRepository.findAll(pageable);
+    }
 }
 
 

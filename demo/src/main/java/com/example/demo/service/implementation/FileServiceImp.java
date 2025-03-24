@@ -32,7 +32,7 @@ public class FileServiceImp implements FileService {
 
         FileDTO fileDTO = new FileDTO();
         fileDTO.setId(file.get().getId());
-        fileDTO.setName(file.get().getName());
+//        fileDTO.setName(file.get().getName());
         fileDTO.setPath(file.get().getPath());
         return fileDTO;
 
@@ -47,7 +47,7 @@ public class FileServiceImp implements FileService {
             file.transferTo(path);
 
             File fileEntity = new File();
-            fileEntity.setName(name);
+//            fileEntity.setName(name);
             fileEntity.setPath("http://localhost:8080/images/" + name);
             return fileRepository.save(fileEntity);
 

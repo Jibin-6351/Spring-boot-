@@ -21,28 +21,21 @@ public class MovieSummaryDTO {
     private String director;
     private LocalDate releaseDate;
     private String path;
-    private Genre genre;
     private String description;
     private String rating;
     private Long views;
     private Long likemovies;
     private Long dislikemovie;
 
-
-
-
-
-
     private List<Cast> castList;
 
-    public MovieSummaryDTO(Long id,String title,String director,LocalDate releaseDate,String description,String rating, Long views, Long dislikemovie,Long likemovies,  String path,Genre genre) {
+    public MovieSummaryDTO(Long id,String title,String director,LocalDate releaseDate,String description,String rating, Long views, Long dislikemovie,Long likemovies,  String path) {
         this.id = id;
         this.title = title;
         this.director = director;
         this.releaseDate = releaseDate;
         this.description = description;
         this.rating = rating;
-        this.genre=genre;
         this.path = path;
         this.views=views;
         this.likemovies=likemovies;

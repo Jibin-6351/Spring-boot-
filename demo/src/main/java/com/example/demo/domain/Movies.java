@@ -18,34 +18,21 @@ public class Movies {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     private String title;
-
     private String director;
-
     private LocalDate releaseDate;
-
     private String rating;
-
     private String description;
-
     private Long views;
-
     private Long likemovie;
-
     private Long dislikemovie;
-
     private String movie_trailer;
-
-    @Enumerated(EnumType.STRING)
-
-    private Genre genre;
-
-
-    @ManyToOne
+//    private Genre genres;
+    private String genre;
+    private String duration;
+    @OneToOne
     @JoinColumn(name = "file_id")
     private File file;
-
 
 
 }

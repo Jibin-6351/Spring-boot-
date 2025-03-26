@@ -2,6 +2,8 @@ package com.example.demo.repository;
 
 import com.example.demo.domain.Movies;
 import com.example.demo.dto.MovieSummaryDTO;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
@@ -11,14 +13,13 @@ import java.util.List;
 
 public interface MovieRepository extends JpaRepository<Movies, Long> {
 
-
-    @Query("SELECT new com.example.demo.dto.MovieSummaryDTO(m.id, m.title, m.director, m.releaseDate, m.description, m.rating,m.views,m.likemovie,m.dislikemovie, f.path) " +
-            "FROM Movies m " +
-            "INNER JOIN File f ON f.id = m.id")
-    List<MovieSummaryDTO> findAllMoviesWithFileInfo();
     boolean existsById(Long id);
     List<Movies> findTitleByReleaseDate(LocalDate releaseDate);
-    List<Movies> findAllTitleByReleaseDateBetween(LocalDate date1, LocalDate date2);
+    Page<Movies> findAllTitleByReleaseDateBetween(LocalDate date1, LocalDate date2,Pageable pageable);
+    @Query("SELECT m FROM Movies m WHERE m.genre LIKE %:genre%")
+    Page<Movies> findMoviesByGenre(String genre, Pageable pageable);
+    @Query("SELECT m FROM Movies m WHERE m.releaseDate BETWEEN :startDate AND :endDate AND m.genre LIKE %:genre%")
+    Page<Movies> findMoviesByReleaseDateAndGenre(LocalDate startDate, LocalDate endDate, String genre,Pageable pageable);
 
 
 }

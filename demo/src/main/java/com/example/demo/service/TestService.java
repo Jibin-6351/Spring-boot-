@@ -23,12 +23,9 @@ public interface TestService {
 
     List<Movies> getMovieByReleaseDate(LocalDate releaseDate);
 
-    List<Movies> getMovieByPeriod(LocalDate date1, LocalDate date2);
+    Page<Movies> getMovieByPeriod(LocalDate date1, LocalDate date2,int size);
 
     MovieSummaryDTO getMovieDTO(Long id);
-
-    List<MovieSummaryDTO> getAlldataPath();
-
     void updateView(Long id);
 
     Number likeMovie(Long id);
@@ -36,6 +33,6 @@ public interface TestService {
     Number dislikeMovie(Long id);
 
     Page<Movies> getMovieByPage(int size);
-
-
+    Page<Movies> getMovieByGenre(String genre,int size);
+    Page<Movies> getMovieByReleaseDateAndGenre(LocalDate date1,LocalDate date2,String genre,int size);
 }

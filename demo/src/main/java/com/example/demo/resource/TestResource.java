@@ -72,8 +72,8 @@ public class TestResource {
     }
 
     @GetMapping("/release")
-    public ResponseEntity<List<Movies>> getMovieByTimePeriod(@RequestParam LocalDate date1, @RequestParam LocalDate date2) {
-        List<Movies> movies = testService.getMovieByPeriod(date1, date2);
+    public ResponseEntity<Page<Movies>> getMovieByTimePeriod(@RequestParam LocalDate date1, @RequestParam LocalDate date2,@RequestParam(value = "size",defaultValue = "0") int size) {
+        Page<Movies> movies = testService.getMovieByPeriod(date1,date2,size);
 
         return ResponseEntity.ok(movies);
     }
@@ -84,17 +84,9 @@ public class TestResource {
         return ResponseEntity.ok(testService.getMovieDTO(id));
     }
 
-    @GetMapping("/path")
-    public ResponseEntity<List<MovieSummaryDTO>> getPath() {
-        return ResponseEntity.ok(testService.getAlldataPath());
-    }
-
-
     @PutMapping("views/{id}")
     public void updateview(@PathVariable Long id) {
         testService.updateView(id);
-
-
     }
 
     @PutMapping("like/{id}")
@@ -129,5 +121,16 @@ public class TestResource {
     public ResponseEntity<Page<Movies>>getMovieByPart(@RequestParam(value = "size",defaultValue = "0") int size){
         return ResponseEntity.ok(testService.getMovieByPage(size));
 }
+
+@GetMapping("/moviebygenre")
+    public ResponseEntity<Page<Movies>>getMovieByGenre(@RequestParam String genre,@RequestParam(value = "size",defaultValue = "0")int size){
+        return ResponseEntity.ok(testService.getMovieByGenre(genre,size));
+}
+
+@GetMapping("/moviebyreleasedategenre")
+    public ResponseEntity<Page<Movies>>getmovie(@RequestParam LocalDate date1,@RequestParam LocalDate date2,@RequestParam String genre,@RequestParam(value = "size",defaultValue = "0")int size){
+        return ResponseEntity.ok(testService.getMovieByReleaseDateAndGenre(date1,date2,genre,size));
+}
+
 
 }

@@ -78,8 +78,9 @@ public class TestServiceImpl implements TestService {
     }
 
     @Override
-    public List<Movies> getMovieByPeriod(LocalDate date1, LocalDate date2) {
-        return movieRepository.findAllTitleByReleaseDateBetween(date1, date2);
+    public Page<Movies> getMovieByPeriod(LocalDate date1, LocalDate date2, int size) {
+        Pageable pageable=PageRequest.of(size,9);
+        return movieRepository.findAllTitleByReleaseDateBetween(date1, date2,pageable);
     }
 
     @Override
@@ -103,13 +104,6 @@ public class TestServiceImpl implements TestService {
 
         return summary;
     }
-
-
-    @Override
-    public List<MovieSummaryDTO> getAlldataPath() {
-        return movieRepository.findAllMoviesWithFileInfo();
-    }
-
     @Override
     public void updateView(Long id) {
         Movies existingMovie = movieRepository.findById(id).orElseThrow(() -> new RuntimeException("Movie Not found" + id));
@@ -139,6 +133,18 @@ public class TestServiceImpl implements TestService {
     public Page<Movies> getMovieByPage(int size) {
         Pageable pageable = PageRequest.of(size, 9);
         return movieRepository.findAll(pageable);
+    }
+
+    @Override
+    public Page<Movies> getMovieByGenre(String genre,int size) {
+        Pageable pageable=PageRequest.of(size,9);
+        return movieRepository.findMoviesByGenre(genre,pageable);
+    }
+
+    @Override
+    public Page<Movies> getMovieByReleaseDateAndGenre(LocalDate date1, LocalDate date2, String genre,int size) {
+        Pageable pageable=PageRequest.of(size,9);
+        return movieRepository.findMoviesByReleaseDateAndGenre(date1,date2,genre,pageable);
     }
 }
 

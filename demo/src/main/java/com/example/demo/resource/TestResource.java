@@ -1,8 +1,7 @@
 package com.example.demo.resource;
 
-import com.example.demo.Exception.ErrorObj;
 import com.example.demo.domain.Movies;
-import com.example.demo.dto.MovieDTO;
+
 import com.example.demo.dto.MovieSummaryDTO;
 import com.example.demo.repository.MovieRepository;
 import com.example.demo.service.TestService;
@@ -20,7 +19,7 @@ import java.util.Optional;
 @AllArgsConstructor
 @CrossOrigin(origins = "http://localhost:4200")
 @RequestMapping("/movie")
-public class TestResource {
+ public class TestResource {
 
     private final MovieRepository movieRepository;
     private TestService testService;
@@ -51,7 +50,7 @@ public class TestResource {
 
         if (movieRepository.existsById(id)) {
             testService.deleteMovie(id);
-            return ResponseEntity.ok("Movie Deleted Successfull");
+            return ResponseEntity.ok("Movie Deleted Successfully");
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Movie NOT FOUND...");
         }
@@ -72,8 +71,8 @@ public class TestResource {
     }
 
     @GetMapping("/release")
-    public ResponseEntity<Page<Movies>> getMovieByTimePeriod(@RequestParam LocalDate date1, @RequestParam LocalDate date2,@RequestParam(value = "size",defaultValue = "0") int size) {
-        Page<Movies> movies = testService.getMovieByPeriod(date1,date2,size);
+    public ResponseEntity<Page<Movies>> getMovieByTimePeriod(@RequestParam LocalDate date1, @RequestParam LocalDate date2, @RequestParam(value = "size", defaultValue = "0") int size) {
+        Page<Movies> movies = testService.getMovieByPeriod(date1, date2, size);
 
         return ResponseEntity.ok(movies);
     }
@@ -91,7 +90,7 @@ public class TestResource {
 
     @PutMapping("like/{id}")
     public ResponseEntity<Number> like(@PathVariable Long id) {
-       return ResponseEntity.ok( testService.likeMovie(id));
+        return ResponseEntity.ok(testService.likeMovie(id));
 
     }
 
@@ -101,36 +100,38 @@ public class TestResource {
 
     }
 
-    @ExceptionHandler(RuntimeException.class)
-    public ResponseEntity<ErrorObj> runTimeException(Exception e) {
+//    @ExceptionHandler(RuntimeException.class)
+//    public ResponseEntity<ErrorObj> runTimeException(Exception e) {
+//
+//        ErrorObj errorObj = new ErrorObj();
+//        errorObj.setError(e.getMessage());
+//        errorObj.setStatusCode(HttpStatus.NOT_FOUND.value());
+//        return new ResponseEntity<>(errorObj, HttpStatus.NOT_FOUND);
+//    }
 
-        ErrorObj errorObj = new ErrorObj();
-        errorObj.setError(e.getMessage());
-        errorObj.setStatusCode(HttpStatus.NOT_FOUND.value());
-        return new ResponseEntity<>(errorObj, HttpStatus.NOT_FOUND);
-    }
+//    @ExceptionHandler(IllegalArgumentException.class)
+//    public ResponseEntity<ErrorObj> illegalArgumentException(IllegalArgumentException e) {
+//        ErrorObj errorObj = new ErrorObj();
+//        errorObj.setError(e.getMessage());
+//        errorObj.setStatusCode(HttpStatus.BAD_REQUEST.value());
+//        return new ResponseEntity<>(errorObj, HttpStatus.BAD_REQUEST);
+//    }
 
-    @ExceptionHandler(IllegalArgumentException.class)
-    public ResponseEntity<ErrorObj> illegalArgumentException(IllegalArgumentException e) {
-        ErrorObj errorObj = new ErrorObj();
-        errorObj.setError(e.getMessage());
-        errorObj.setStatusCode(HttpStatus.BAD_REQUEST.value());
-        return new ResponseEntity<>(errorObj, HttpStatus.BAD_REQUEST);
-    }
-@GetMapping("/moviebypage")
-    public ResponseEntity<Page<Movies>>getMovieByPart(@RequestParam(value = "size",defaultValue = "0") int size){
+    @GetMapping("/moviebypage")
+    public ResponseEntity<Page<Movies>> getMovieByPart(@RequestParam(value = "size", defaultValue = "0") int size) {
         return ResponseEntity.ok(testService.getMovieByPage(size));
+    }
+
+    @GetMapping("/moviebygenre")
+    public ResponseEntity<Page<Movies>> getMovieByGenre(@RequestParam String genre, @RequestParam(value = "size", defaultValue = "0") int size) {
+        return ResponseEntity.ok(testService.getMovieByGenre(genre, size));
+    }
+
+    @GetMapping("/moviebyreleasedategenre")
+    public ResponseEntity<Page<Movies>> getmovie(@RequestParam LocalDate date1, @RequestParam LocalDate date2, @RequestParam String genre, @RequestParam(value = "size", defaultValue = "0") int size) {
+        return ResponseEntity.ok(testService.getMovieByReleaseDateAndGenre(date1, date2, genre, size));
+    }
+
+
 }
 
-@GetMapping("/moviebygenre")
-    public ResponseEntity<Page<Movies>>getMovieByGenre(@RequestParam String genre,@RequestParam(value = "size",defaultValue = "0")int size){
-        return ResponseEntity.ok(testService.getMovieByGenre(genre,size));
-}
-
-@GetMapping("/moviebyreleasedategenre")
-    public ResponseEntity<Page<Movies>>getmovie(@RequestParam LocalDate date1,@RequestParam LocalDate date2,@RequestParam String genre,@RequestParam(value = "size",defaultValue = "0")int size){
-        return ResponseEntity.ok(testService.getMovieByReleaseDateAndGenre(date1,date2,genre,size));
-}
-
-
-}

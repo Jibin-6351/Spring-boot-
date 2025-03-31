@@ -2,7 +2,6 @@ package com.example.demo.service.implementation;
 
 import com.example.demo.domain.Cast;
 import com.example.demo.domain.Movies;
-import com.example.demo.dto.MovieDTO;
 import com.example.demo.dto.MovieSummaryDTO;
 import com.example.demo.repository.CastRepository;
 import com.example.demo.repository.MovieRepository;
@@ -79,8 +78,8 @@ public class TestServiceImpl implements TestService {
 
     @Override
     public Page<Movies> getMovieByPeriod(LocalDate date1, LocalDate date2, int size) {
-        Pageable pageable=PageRequest.of(size,9);
-        return movieRepository.findAllTitleByReleaseDateBetween(date1, date2,pageable);
+        Pageable pageable = PageRequest.of(size, 9);
+        return movieRepository.findAllTitleByReleaseDateBetween(date1, date2, pageable);
     }
 
     @Override
@@ -104,6 +103,7 @@ public class TestServiceImpl implements TestService {
 
         return summary;
     }
+
     @Override
     public void updateView(Long id) {
         Movies existingMovie = movieRepository.findById(id).orElseThrow(() -> new RuntimeException("Movie Not found" + id));
@@ -136,15 +136,15 @@ public class TestServiceImpl implements TestService {
     }
 
     @Override
-    public Page<Movies> getMovieByGenre(String genre,int size) {
-        Pageable pageable=PageRequest.of(size,9);
-        return movieRepository.findMoviesByGenre(genre,pageable);
+    public Page<Movies> getMovieByGenre(String genre, int size) {
+        Pageable pageable = PageRequest.of(size, 9);
+        return movieRepository.findMoviesByGenre(genre, pageable);
     }
 
     @Override
-    public Page<Movies> getMovieByReleaseDateAndGenre(LocalDate date1, LocalDate date2, String genre,int size) {
-        Pageable pageable=PageRequest.of(size,9);
-        return movieRepository.findMoviesByReleaseDateAndGenre(date1,date2,genre,pageable);
+    public Page<Movies> getMovieByReleaseDateAndGenre(LocalDate date1, LocalDate date2, String genre, int size) {
+        Pageable pageable = PageRequest.of(size, 9);
+        return movieRepository.findMoviesByReleaseDateAndGenre(date1, date2, genre, pageable);
     }
 }
 

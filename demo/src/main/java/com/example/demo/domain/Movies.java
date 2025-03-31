@@ -1,6 +1,4 @@
 package com.example.demo.domain;
-
-import com.example.demo.domain.enums.Genre;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.Getter;
@@ -27,7 +25,6 @@ public class Movies {
     private Long likemovie;
     private Long dislikemovie;
     private String movie_trailer;
-//    private Genre genres;
     private String genre;
     private String duration;
     @OneToOne

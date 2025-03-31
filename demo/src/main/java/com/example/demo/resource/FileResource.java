@@ -1,8 +1,6 @@
 package com.example.demo.resource;
 
-import com.example.demo.Exception.ErrorObj;
 import com.example.demo.domain.File;
-import com.example.demo.repository.FileRepository;
 import com.example.demo.service.FileService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -26,13 +24,13 @@ public class FileResource {
         return ResponseEntity.ok(fileService.uploadFile(file));
     }
 
-    @ExceptionHandler(IOException.class)
-    public ResponseEntity<ErrorObj> IOException(IOException e){
-        ErrorObj errorObj = new ErrorObj();
-        errorObj.setError(e.getMessage());
-        errorObj.setStatusCode(HttpStatus.BAD_REQUEST.value());
-        return new ResponseEntity<>(errorObj, HttpStatus.BAD_REQUEST);
-    }
+//    @ExceptionHandler(IOException.class)
+//    public ResponseEntity<ErrorObj> IOException(IOException e){
+//        ErrorObj errorObj = new ErrorObj();
+//        errorObj.setError(e.getMessage());
+//        errorObj.setStatusCode(HttpStatus.BAD_REQUEST.value());
+//        return new ResponseEntity<>(errorObj, HttpStatus.BAD_REQUEST);
+//    }
 
 
 

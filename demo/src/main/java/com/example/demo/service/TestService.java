@@ -1,7 +1,6 @@
 package com.example.demo.service;
 
 import com.example.demo.domain.Movies;
-import com.example.demo.dto.MovieDTO;
 import com.example.demo.dto.MovieSummaryDTO;
 import org.springframework.data.domain.Page;
 

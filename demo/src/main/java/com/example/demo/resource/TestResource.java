@@ -17,7 +17,11 @@ import java.util.Optional;
 
 @RestController
 @AllArgsConstructor
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = "http://localhost:4200",
+        allowedHeaders = "*",
+        exposedHeaders = "Authorization",
+        allowCredentials = "true",
+        methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE})
 @RequestMapping("/movie")
  public class TestResource {
 
@@ -99,23 +103,6 @@ import java.util.Optional;
         return ResponseEntity.ok(testService.dislikeMovie(id));
 
     }
-
-//    @ExceptionHandler(RuntimeException.class)
-//    public ResponseEntity<ErrorObj> runTimeException(Exception e) {
-//
-//        ErrorObj errorObj = new ErrorObj();
-//        errorObj.setError(e.getMessage());
-//        errorObj.setStatusCode(HttpStatus.NOT_FOUND.value());
-//        return new ResponseEntity<>(errorObj, HttpStatus.NOT_FOUND);
-//    }
-
-//    @ExceptionHandler(IllegalArgumentException.class)
-//    public ResponseEntity<ErrorObj> illegalArgumentException(IllegalArgumentException e) {
-//        ErrorObj errorObj = new ErrorObj();
-//        errorObj.setError(e.getMessage());
-//        errorObj.setStatusCode(HttpStatus.BAD_REQUEST.value());
-//        return new ResponseEntity<>(errorObj, HttpStatus.BAD_REQUEST);
-//    }
 
     @GetMapping("/moviebypage")
     public ResponseEntity<Page<Movies>> getMovieByPart(@RequestParam(value = "size", defaultValue = "0") int size) {

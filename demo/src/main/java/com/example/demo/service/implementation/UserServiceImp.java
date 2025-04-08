@@ -2,14 +2,13 @@ package com.example.demo.service.implementation;
 
 import com.example.demo.Exception.InvalidCredentialsException;
 import com.example.demo.Utils.JwtUtil;
+import com.example.demo.domain.Token;
 import com.example.demo.domain.User;
 import com.example.demo.dto.UserResponseDTO;
+import com.example.demo.repository.TokenRepository;
 import com.example.demo.repository.UserRepository;
 import com.example.demo.service.UserService;
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.web.csrf.CsrfToken;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -21,6 +20,8 @@ import java.util.Optional;
 public class UserServiceImp implements UserService {
 
     private UserRepository userRepository;
+    private TokenRepository tokenRepository;
+
     private JwtUtil jwtUtil;
 
 
@@ -52,10 +53,16 @@ public class UserServiceImp implements UserService {
         Optional<User> finduser = userRepository.findByEmail(user.getEmail());
         if (finduser.isPresent()) {
             if (Objects.equals(finduser.get().getPassword(), user.getPassword())) {
-                String token = jwtUtil.generateToken(finduser.get().getFirstName());
+                String token = jwtUtil.generateToken(finduser.get().getEmail());
                 User updateUser = finduser.get();
                 updateUser.setLastLogin(LocalDateTime.now());
+                updateUser.setToken_valid("valid");
                 userRepository.save(updateUser);
+                Token token1 = new Token();
+                token1.setToken(token);
+                token1.setUserEmail(finduser.get().getEmail());
+                tokenRepository.save(token1);
+
                 return token;
             } else {
                 throw new InvalidCredentialsException("Invalid Password");
@@ -77,6 +84,7 @@ public class UserServiceImp implements UserService {
         Optional<User> user1 = userRepository.findById(user.getId());
         if (user1.isPresent()) {
             User user2 = user1.get();
+            user2.setPassword(user.getPassword());
             user2.setUpdatedDate(LocalDateTime.now());
             userRepository.save(user2);
         } else {
@@ -84,6 +92,7 @@ public class UserServiceImp implements UserService {
         }
 
     }
+
     @Override
     public void updateDetails(User user) {
         Optional<User> updateUser = userRepository.findById(user.getId());
@@ -115,9 +124,15 @@ public class UserServiceImp implements UserService {
     }
 
     @Override
-    public CsrfToken generateToken(HttpServletRequest request) {
-        return (CsrfToken) request.getAttribute("_csrf");
+    public String logout(String token) {
+        if (token.startsWith("Bearer ")) {
+            token = token.substring(7);
+            String email = jwtUtil.extractUsername(token);
+            userRepository.findByEmail(email).ifPresent(user -> {
+                user.setToken_valid("invalid");
+            });
+            tokenRepository.deleteByToken(token);
+        }
+        return "Signout successfull";
     }
-
-
 }

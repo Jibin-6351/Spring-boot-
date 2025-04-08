@@ -6,12 +6,10 @@ import com.example.demo.Utils.JwtUtil;
 import com.example.demo.domain.User;
 import com.example.demo.dto.UserResponseDTO;
 import com.example.demo.service.UserService;
-import jakarta.servlet.http.HttpServlet;
-import jakarta.servlet.http.HttpServletRequest;
+import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.web.csrf.CsrfToken;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
@@ -19,10 +17,14 @@ import java.util.Optional;
 @RestController
 @AllArgsConstructor
 @RequestMapping("/user")
+@CrossOrigin(origins = "http://localhost:4200",
+        allowedHeaders = "*",
+        exposedHeaders = "Authorization",
+        allowCredentials = "true",
+        methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE})
 public class UserResource {
     private UserService userService;
     private JwtUtil jwtUtil;
-
 
 
     @GetMapping("/test")
@@ -76,9 +78,11 @@ public class UserResource {
         return ResponseEntity.ok().body(new ApiResponse("Success", user));
     }
 
-    @GetMapping("/generatetoken")
-    public CsrfToken getToken(HttpServletRequest request){
-        return userService.generateToken(request);
-
+    @Transactional
+    @GetMapping("/sign-out")
+    public ResponseEntity<ApiResponse> signout(@RequestHeader("Authorization") String token) {
+        String message = userService.logout(token);
+        return ResponseEntity.ok().body(new ApiResponse(message, null));
     }
+
 }
